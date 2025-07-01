@@ -101,6 +101,13 @@ var diffArgsMap = map[string][]string{
 	"TestRun/test_Dockerfile_test_multistage":   {"--extra-ignore-files=new"},
 	// docker is wrong. we set permissions to 777 as instructed, they set to 755
 	"TestRun/test_Dockerfile_test_copyadd_chmod": {"--extra-ignore-files=dir777/"},
+	// WORKDIR is not cached https://github.com/GoogleContainerTools/kaniko/issues/3340
+	"TestCache/test_cache_Dockerfile_test_cache_install":         {"--semantic"},
+	"TestCache/test_oci_cache_Dockerfile_test_cache_install_oci": {"--semantic"},
+	// empty RUN statements are treated differently whether they are built from scratch or from cache
+	// https://github.com/GoogleContainerTools/kaniko/pull/3496
+	"TestCache/test_cache_Dockerfile_test_cache":         {"--semantic", "--extra-ignore-layer-length-mismatch"},
+	"TestCache/test_oci_cache_Dockerfile_test_cache_oci": {"--semantic", "--extra-ignore-layer-length-mismatch"},
 }
 
 // output check to do when building with kaniko
