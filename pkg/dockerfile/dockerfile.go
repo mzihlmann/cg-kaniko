@@ -390,6 +390,21 @@ func skipUnusedStages(stages []instructions.Stage, lastStageIndex *int, target s
 		}
 	}
 
+	// When we don't pass any target kaniko implicitly builds all stages.
+	// This is not only sub-optimal, but also different to docker.
+	// I removed this in https://github.com/mzihlmann/kaniko/pull/27 already
+	// on my end. But to keep the behaviour consistent on your end, this here implements the same logic.
+	// Just drop it if you want to optimize the builds in the same way as I do.
+	dependenciesLen := 0
+	for _, s := range stagesDependencies {
+		if s {
+			dependenciesLen += 1
+		}
+	}
+	if target == "" && dependenciesLen < 2 {
+		return stages
+	}
+
 	var onlyUsedStages []instructions.Stage
 	for i := 0; i < *lastStageIndex+1; i++ {
 		if stagesDependencies[i] {
