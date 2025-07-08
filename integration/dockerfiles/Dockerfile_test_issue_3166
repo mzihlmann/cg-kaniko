@@ -7,4 +7,5 @@ USER nobody
 # applied to the contents of the copy, but all implicitly created
 # directories too, including the top-level directory.
 COPY --chmod=400 context/ /some/nested/context
-RUN ls -la /some/nested/context
+RUN ls -la /some/nested/context \
+    && touch /tmp/blubb
