@@ -8,4 +8,5 @@ USER nobody
 # but is ignored on existing folders
 COPY --chmod=400 context/ /context
 COPY --chmod=755 context/ /context
-RUN ls -la /context
+RUN ls -la /context \
+    && touch /tmp/blubb
